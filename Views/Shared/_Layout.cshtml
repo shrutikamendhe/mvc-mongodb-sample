@@ -5,6 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>@ViewBag.Title - My ASP.NET Application</title>
     <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.3/css/bootstrap.min.css" />
+    <style>
+        .row {
+            margin: 0px !important;
+        }
+
+        .bs-example {
+            border-color: #ddd;
+            border-width: 1px;
+            padding: 45px 15px 15px;
+        }
+    </style>
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -26,12 +37,6 @@
     <div class="container body-content">
         @RenderBody()
         <hr />
-        <address>
-            @if (@Model != null)
-            {
-                @Model.Address
-            }
-        </address>
         <footer>
             <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
         </footer>
