@@ -18,8 +18,8 @@ namespace MvcSample.Web
             //Retrive Parameters from Environment Variables
             string userName = Environment.GetEnvironmentVariable("MONGODB_USER");
             string password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
-            //string server = "172.30.56.23"; 
-            string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
+            string server = "172.30.56.23"; 
+            //string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
             string databaseName = Environment.GetEnvironmentVariable("MONGODB_DATABASE");
 
 
