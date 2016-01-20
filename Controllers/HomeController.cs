@@ -79,6 +79,15 @@ namespace MvcSample.Web
         public List<Restaurants> ListRestaurants()
         {
             List<Restaurants> restaurant = new List<Restaurants>();
+            restaurant.Add(new Restaurants()
+            {
+                Name = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME"),
+                Address = Environment.GetEnvironmentVariable("DATABASE_NAME"),
+                Cuisine = Environment.GetEnvironmentVariable("MONGODB_USER") + ":" + Environment.GetEnvironmentVariable("MONGODB_PASSWORD")
+            });
+
+            return restaurant;
+
             var collection = MONGO_DATABASE.GetCollection<BsonDocument>(COLLECTION_NAME);
             try
             {
