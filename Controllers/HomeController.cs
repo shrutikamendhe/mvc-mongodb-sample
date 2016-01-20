@@ -21,15 +21,23 @@ namespace MvcSample.Web
 
         public IActionResult Index()
         {
-            string userName = Environment.GetEnvironmentVariable("MONGODB_USER");
-            string password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
-            string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
-            _databaseName = "sampledb";
+            restCollection = new List<Restaurants>();
 
-            _mongoDbConnectionString = "mongodb://" + userName + ":" + password + "@" + server + ":27017/" + _databaseName;
+            try
+            {
+                string userName = Environment.GetEnvironmentVariable("MONGODB_USER");
+                string password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
+                string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
+                _databaseName = "sampledb";
 
+                if (!(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(server)))
+                {
+                    _mongoDbConnectionString = "mongodb://" + userName + ":" + password + "@" + server + ":27017/" + _databaseName;
+                    restCollection = ListRestaurants();
+                }
+            }
+            catch (Exception) { }
 
-            restCollection = ListRestaurants();
             return View(restCollection);
         }
 
@@ -37,7 +45,7 @@ namespace MvcSample.Web
         {
             List<Restaurants> restaurant = new List<Restaurants>();
 
-            if (_client == null) { _client = new MongoClient(_mongoDbConnectionString); }
+            if (_client == null && !string.IsNullOrEmpty(_mongoDbConnectionString) ) { _client = new MongoClient(_mongoDbConnectionString); }
             if (_database == null) { _database = _client.GetDatabase(_databaseName); }
 
             var collection = _database.GetCollection<BsonDocument>(_collectionName);
