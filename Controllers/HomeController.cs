@@ -19,7 +19,7 @@ namespace MvcSample.Web
             string userName = Environment.GetEnvironmentVariable("MONGODB_USER");
             string password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
             string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
-            string databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME");
+            string databaseName = Environment.GetEnvironmentVariable("MONGODB_DATABASE");
 
             if (!(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)
                 || string.IsNullOrEmpty(server) || string.IsNullOrEmpty(databaseName)))

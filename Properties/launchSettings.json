@@ -13,10 +13,10 @@
       "launchBrowser": true,
       "environmentVariables": {
         "ASPNET_ENV": "Development",
-        "MONGODB_PASSWORD": "Value",
-        "MONGODB_USER": "Value",
-        "DATABASE_NAME": "Value",
-        "DATABASE_SERVICE_NAME": "Value"
+        "MONGODB_PASSWORD": "4pqevmiNfasUJAMx",
+        "MONGODB_USER": "userRG5",
+        "MONGODB_DATABASE": "sampledb",
+        "DATABASE_SERVICE_NAME": "localhost"
       }
     },
     "web": {
