@@ -33,7 +33,7 @@ namespace MvcSample.Web
                     var client = new MongoClient(mongoDbConnectionString);
                     MONGO_DATABASE = client.GetDatabase(databaseName);
                 }
-                catch (Exception) { }
+                catch (Exception ex) { Logger.Error(ex, "InitializeMongoDatabase"); }
             }
             else { MONGO_DATABASE = null; }
         }
@@ -70,7 +70,7 @@ namespace MvcSample.Web
                 //};
                 //collection.InsertOneAsync(restaurant.ToBsonDocument()).Wait();
             }
-            catch (Exception) { }
+            catch (Exception ex) { Logger.Error(ex, "Index"); }
 
             List<Restaurants> restCollection = ListRestaurants();
             return View(restCollection);
@@ -79,18 +79,9 @@ namespace MvcSample.Web
         public List<Restaurants> ListRestaurants()
         {
             List<Restaurants> restaurant = new List<Restaurants>();
-            restaurant.Add(new Restaurants()
-            {
-                Name = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME"),
-                Address = Environment.GetEnvironmentVariable("DATABASE_NAME"),
-                Cuisine = Environment.GetEnvironmentVariable("MONGODB_USER") + ":" + Environment.GetEnvironmentVariable("MONGODB_PASSWORD")
-            });
-
-            return restaurant;
-
-            var collection = MONGO_DATABASE.GetCollection<BsonDocument>(COLLECTION_NAME);
             try
             {
+                var collection = MONGO_DATABASE.GetCollection<BsonDocument>(COLLECTION_NAME);
                 var filter = new BsonDocument();
                 using (var cursor = collection.FindAsync(filter).Result)
                 {
@@ -110,7 +101,7 @@ namespace MvcSample.Web
                     }
                 }
             }
-            catch (Exception ex) { }
+            catch (Exception ex) { Logger.Error(ex, "ListRestaurants"); }
             return restaurant;
         }
     }
