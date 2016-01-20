@@ -10,46 +10,76 @@ namespace MvcSample.Web
 {
     public class HomeController : Controller
     {
-        private static string _mongoDbConnectionString = string.Empty;
-        private static string _databaseName = string.Empty;
-        private static string _collectionName = "restaurants";
+        private static IMongoDatabase MONGO_DATABASE = null;
+        private static string COLLECTION_NAME = "restaurants";
 
-        private static IMongoClient _client;
-        private static IMongoDatabase _database;
+        private void InitializeMongoDatabase()
+        {
+            //Retrive Parameters from Environment Variables
+            string userName = Environment.GetEnvironmentVariable("MONGODB_USER");
+            string password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
+            string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
+            string databaseName = Environment.GetEnvironmentVariable("DATABASE_NAME");
 
-        private static List<Restaurants> restCollection = null;
+            if (!(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)
+                || string.IsNullOrEmpty(server) || string.IsNullOrEmpty(databaseName)))
+            {
+                //Create Connection String for MongoDB
+                string mongoDbConnectionString = string.Format("mongodb://{0}:{1}@{2}:{3}/{4}", userName, password,
+                    server, "27017", databaseName);
+
+                try
+                {
+                    var client = new MongoClient(mongoDbConnectionString);
+                    MONGO_DATABASE = client.GetDatabase(databaseName);
+                }
+                catch (Exception) { }
+            }
+            else { MONGO_DATABASE = null; }
+        }
 
         public IActionResult Index()
         {
-            restCollection = new List<Restaurants>();
+            InitializeMongoDatabase();
+            List<Restaurants> restCollection = ListRestaurants();
 
+            restCollection = new List<Restaurants>();
+            return View(restCollection);
+        }
+
+        [HttpPost]
+        public IActionResult Index(Microsoft.AspNet.Http.Internal.FormCollection formCollection)
+        {
             try
             {
-                string userName = Environment.GetEnvironmentVariable("MONGODB_USER");
-                string password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
-                string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
-                _databaseName = "sampledb";
+                BsonDocument doc = new BsonDocument();
+                doc.Add(new BsonElement("Name", Request.Form["restname"].ToString()));
+                doc.Add(new BsonElement("Address", Request.Form["address"].ToString()));
+                doc.Add(new BsonElement("RestaurantId", Request.Form["restaurantId"].ToString()));
+                doc.Add(new BsonElement("Cuisine", Request.Form["cuisine"].ToString()));
 
-                if (!(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password) || string.IsNullOrEmpty(server)))
-                {
-                    _mongoDbConnectionString = "mongodb://" + userName + ":" + password + "@" + server + ":27017/" + _databaseName;
-                    restCollection = ListRestaurants();
-                }
+                var collection = MONGO_DATABASE.GetCollection<BsonDocument>(COLLECTION_NAME);
+                collection.InsertOne(doc);
+
+                //Restaurants restaurant = new Restaurants()
+                //{
+                //    Name = Request.Form["restname"],
+                //    Address = Request.Form["address"],
+                //    RestaurantId = int.Parse(Request.Form["restaurantId"]),
+                //    Cuisine = Request.Form["cuisine"]
+                //};
+                //collection.InsertOneAsync(restaurant.ToBsonDocument()).Wait();
             }
             catch (Exception) { }
 
+            List<Restaurants> restCollection = ListRestaurants();
             return View(restCollection);
         }
 
         public List<Restaurants> ListRestaurants()
         {
             List<Restaurants> restaurant = new List<Restaurants>();
-
-            if (_client == null && !string.IsNullOrEmpty(_mongoDbConnectionString) ) { _client = new MongoClient(_mongoDbConnectionString); }
-            if (_database == null) { _database = _client.GetDatabase(_databaseName); }
-
-            var collection = _database.GetCollection<BsonDocument>(_collectionName);
-
+            var collection = MONGO_DATABASE.GetCollection<BsonDocument>(COLLECTION_NAME);
             try
             {
                 var filter = new BsonDocument();
@@ -71,22 +101,7 @@ namespace MvcSample.Web
                     }
                 }
             }
-            catch (Exception) { }
-
-            //Restaurants restaurant = new Restaurants()
-            //{
-            //    Name = "Haldiram",
-            //    Address = "2 Avenue",
-            //    RestaurantId = 41704621,
-            //    Cuisine = "Indian"
-            //};
-
-            ////BsonDocument doc = new BsonDocument();
-            ////doc.Add(new BsonElement("Name", "test"));
-            ////collection.InsertOne(doc);
-
-            //collection.InsertOneAsync(restaurant.ToBsonDocument()).Wait();
-
+            catch (Exception ex) { }
             return restaurant;
         }
     }
