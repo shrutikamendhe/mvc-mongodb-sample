@@ -18,8 +18,9 @@ namespace MvcSample.Web
             //Retrive Parameters from Environment Variables
             string userName = Environment.GetEnvironmentVariable("MONGODB_USER");
             string password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
-            string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
+            string server = "172.30.56.23"; //Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
             string databaseName = Environment.GetEnvironmentVariable("MONGODB_DATABASE");
+
 
             if (!(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)
                 || string.IsNullOrEmpty(server) || string.IsNullOrEmpty(databaseName)))
