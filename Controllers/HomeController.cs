@@ -18,7 +18,8 @@ namespace MvcSample.Web
             //Retrive Parameters from Environment Variables
             string userName = Environment.GetEnvironmentVariable("MONGODB_USER");
             string password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
-            string server = "172.30.56.23"; //Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
+            //string server = "172.30.56.23"; 
+            string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
             string databaseName = Environment.GetEnvironmentVariable("MONGODB_DATABASE");
 
 
@@ -43,8 +44,6 @@ namespace MvcSample.Web
         {
             InitializeMongoDatabase();
             List<Restaurants> restCollection = ListRestaurants();
-
-            restCollection = new List<Restaurants>();
             return View(restCollection);
         }
 
@@ -61,15 +60,6 @@ namespace MvcSample.Web
 
                 var collection = MONGO_DATABASE.GetCollection<BsonDocument>(COLLECTION_NAME);
                 collection.InsertOne(doc);
-
-                //Restaurants restaurant = new Restaurants()
-                //{
-                //    Name = Request.Form["restname"],
-                //    Address = Request.Form["address"],
-                //    RestaurantId = int.Parse(Request.Form["restaurantId"]),
-                //    Cuisine = Request.Form["cuisine"]
-                //};
-                //collection.InsertOneAsync(restaurant.ToBsonDocument()).Wait();
             }
             catch (Exception ex) { Logger.Error(ex, "Index"); }
 
@@ -91,11 +81,13 @@ namespace MvcSample.Web
                         var batch = cursor.Current;
                         foreach (var document in batch)
                         {
+                            int id = 0;
+                            int.TryParse(document["RestaurantId"].ToString(), out id);
                             restaurant.Add(new Restaurants()
                             {
                                 Name = document["Name"].ToString(),
                                 Address = document["Address"].ToString(),
-                                RestaurantId = int.Parse(document["RestaurantId"].ToString()),
+                                RestaurantId = id,
                                 Cuisine = document["Cuisine"].ToString()
                             });
                         }
