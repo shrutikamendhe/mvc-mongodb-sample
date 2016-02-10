@@ -20,7 +20,7 @@ namespace MvcSample.Web
             string password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
             //string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
             //TODO: Provide ip of mongo db server 
-            string server = "172.30.130.70"; 
+            string server = "172.30.133.63"; 
             string databaseName = Environment.GetEnvironmentVariable("MONGODB_DATABASE");
 
 
