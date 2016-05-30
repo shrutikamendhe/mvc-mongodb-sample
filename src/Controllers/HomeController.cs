@@ -42,12 +42,14 @@ namespace Click2Cloud.Samples.AspNetCore.MvcMongoDb.Web
 
         public IActionResult Index()
         {
-            List<Restaurants> restCollection = new List<Restaurants>();
+            List<Restaurants> restCollection = null;
 
             if (MONGO_DATABASE == null) { InitializeMongoDatabase(); }
 
-            if (MONGO_DATABASE == null) { ViewBag.ClusterIPError = "MongoDB Cluster IP is not set."; }
+            if (MONGO_DATABASE == null) { ViewBag.ClusterIPError = "MongoDB Cluster IP is not set."; return View(restCollection);  }
             else { restCollection = ListRestaurants(); }
+
+            if (restCollection == null) { ViewBag.ClusterIPError = "Unable to retrieve records from collection. Please verify your connection."; }
 
             return View(restCollection);
         }
@@ -63,10 +65,11 @@ namespace Click2Cloud.Samples.AspNetCore.MvcMongoDb.Web
                 doc.Add(new BsonElement("RestaurantId", Request.Form["restaurantId"].ToString()));
                 doc.Add(new BsonElement("Cuisine", Request.Form["cuisine"].ToString()));
 
+                if (MONGO_DATABASE == null) { ViewBag.ClusterIPError = "MongoDB Cluster IP is not set."; return null; }
                 var collection = MONGO_DATABASE.GetCollection<BsonDocument>(COLLECTION_NAME);
                 collection.InsertOne(doc);
             }
-            catch (Exception ex) { Logger.Error(ex, "Index"); }
+            catch (Exception ex) { ViewBag.ClusterIPError = "Unable to add records. Please verify your connection."; Logger.Error(ex, "Index"); }
 
             List<Restaurants> restCollection = ListRestaurants();
             return View(restCollection);
@@ -74,13 +77,15 @@ namespace Click2Cloud.Samples.AspNetCore.MvcMongoDb.Web
 
         public List<Restaurants> ListRestaurants()
         {
-            List<Restaurants> restaurant = new List<Restaurants>();
+            List<Restaurants> restaurant = null;
             try
             {
                 var collection = MONGO_DATABASE.GetCollection<BsonDocument>(COLLECTION_NAME);
                 var filter = new BsonDocument();
                 using (var cursor = collection.FindAsync(filter).Result)
                 {
+                    restaurant = new List<Restaurants>();
+
                     while (cursor.MoveNextAsync().Result)
                     {
                         var batch = cursor.Current;
