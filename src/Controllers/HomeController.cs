@@ -42,8 +42,13 @@ namespace Click2Cloud.Samples.AspNetCore.MvcMongoDb.Web
 
         public IActionResult Index()
         {
+            List<Restaurants> restCollection = new List<Restaurants>();
+
             if (MONGO_DATABASE == null) { InitializeMongoDatabase(); }
-            List<Restaurants> restCollection = ListRestaurants();
+
+            if (MONGO_DATABASE == null) { ViewBag.ClusterIPError = "MongoDB Cluster IP is not set."; }
+            else { restCollection = ListRestaurants(); }
+
             return View(restCollection);
         }
 

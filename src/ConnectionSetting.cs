@@ -39,7 +39,7 @@ namespace Click2Cloud.Samples.AspNetCore.MvcMongoDb
 
                     return _connectionString;
                 }
-                else { throw new Exception("MongoDB Cluster IP is not set"); }
+                else { throw new Exception("MongoDB Cluster IP is not set."); }
             }
         }
 
