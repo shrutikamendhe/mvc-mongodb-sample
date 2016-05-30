@@ -11,7 +11,7 @@
     <OutputPath Condition="'$(OutputPath)'=='' ">..\..\artifacts\bin\$(MSBuildProjectName)\</OutputPath>
   </PropertyGroup>
   <PropertyGroup Label="Configuration">
-    <RootNamespace>MvcSample</RootNamespace>
+    <RootNamespace>Click2Cloud.Samples.AspNetCore.MvcMongoDb</RootNamespace>
   </PropertyGroup>
   <PropertyGroup>
     <SchemaVersion>2.0</SchemaVersion>

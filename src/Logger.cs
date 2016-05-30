@@ -22,7 +22,7 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using System.IO;
 
-namespace MvcSample
+namespace Click2Cloud.Samples.AspNetCore.MvcMongoDb
 {
     public class Logger
     {
