@@ -32,30 +32,12 @@ namespace Click2Cloud.Samples.AspNetCore.MvcMongoDb.Web
 
         private void InitializeMongoDatabase()
         {
-            //Retrive Parameters from Environment Variables
-            string userName = Environment.GetEnvironmentVariable("MONGODB_USER");
-            string password = Environment.GetEnvironmentVariable("MONGODB_PASSWORD");
-            //string server = Environment.GetEnvironmentVariable("DATABASE_SERVICE_NAME");
-            //TODO: Provide ip of mongo db server 
-            string server = "172.30.193.8"; 
-            string databaseName = Environment.GetEnvironmentVariable("MONGODB_DATABASE");
-
-
-            if (!(string.IsNullOrEmpty(userName) || string.IsNullOrEmpty(password)
-                || string.IsNullOrEmpty(server) || string.IsNullOrEmpty(databaseName)))
+            try
             {
-                //Create Connection String for MongoDB
-                string mongoDbConnectionString = string.Format("mongodb://{0}:{1}@{2}:{3}/{4}", userName, password,
-                    server, "27017", databaseName);
-
-                try
-                {
-                    var client = new MongoClient(mongoDbConnectionString);
-                    MONGO_DATABASE = client.GetDatabase(databaseName);
-                }
-                catch (Exception ex) { Logger.Error(ex, "InitializeMongoDatabase"); }
+                var client = new MongoClient(ConnectionSetting.CONNECTION_STRING);
+                MONGO_DATABASE = client.GetDatabase(ConnectionSetting.MONGODB_DATABASE);
             }
-            else { MONGO_DATABASE = null; }
+            catch (Exception ex) { Logger.Error(ex, "InitializeMongoDatabase"); MONGO_DATABASE = null; }
         }
 
         public IActionResult Index()
