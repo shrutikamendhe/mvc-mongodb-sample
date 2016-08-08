@@ -1,13 +1,16 @@
+﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8BE7A54C-98D7-473C-B3CC-066C0BC103B9}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{A962138C-A867-4F3F-97FB-0A0B1F49D639}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{E7DD3691-FB44-4E55-9B60-A37460A6D51E}"
 	ProjectSection(SolutionItems) = preProject
 		global.json = global.json
 	EndProjectSection
 EndProject
-Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "mvc-mongodb-sample", "src\mvc-mongodb-sample.xproj", "{78627BB3-851E-4C1A-91C0-629FC7C15F8F}"
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "mvc-mongodb-sample", "src\mvc-mongodb-sample\mvc-mongodb-sample.xproj", "{BDC19425-40E6-4D73-853E-20D14B8BFB3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,12 +18,15 @@ Global
 		Release|Any CPU = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(ProjectConfigurationPlatforms) = postSolution
-		{78627BB3-851E-4C1A-91C0-629FC7C15F8F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{78627BB3-851E-4C1A-91C0-629FC7C15F8F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{78627BB3-851E-4C1A-91C0-629FC7C15F8F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{78627BB3-851E-4C1A-91C0-629FC7C15F8F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BDC19425-40E6-4D73-853E-20D14B8BFB3E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BDC19425-40E6-4D73-853E-20D14B8BFB3E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BDC19425-40E6-4D73-853E-20D14B8BFB3E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BDC19425-40E6-4D73-853E-20D14B8BFB3E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{BDC19425-40E6-4D73-853E-20D14B8BFB3E} = {A962138C-A867-4F3F-97FB-0A0B1F49D639}
 	EndGlobalSection
 EndGlobal
